@@ -1,0 +1,36 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Residents List{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-home"></i> Residents List</h2>
+<hr>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Flat No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Join Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for resident in residents %}
+                    <tr>
+                        <td>{{ resident.flat_no or '-' }}</td>
+                        <td>{{ resident.full_name }}</td>
+                        <td>{{ resident.email or '-' }}</td>
+                        <td>{{ resident.phone or '-' }}</td>
+                        <td>{{ resident.joining_date.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

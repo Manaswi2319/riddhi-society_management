@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Riddhi Society</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container">
+            <span class="navbar-brand">🏢 Riddhi Co-op Housing Society</span>
+            <div>
+                <span class="text-white me-3">Welcome, {{ name }}!</span>
+                <a href="/logout" class="btn btn-light btn-sm">Logout</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <h5>Total Members</h5>
+                        <h2>{{ total_members }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <h5>Pending Complaints</h5>
+                        <h2>{{ pending_complaints }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <h5>Total Bills</h5>
+                        <h2>{{ total_bills }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5>Amount Due</h5>
+                        <h2>₹{{ total_amount_due }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h5>Recent Complaints</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if recent_complaints %}
+                            {% for complaint in recent_complaints %}
+                                <div class="border-bottom mb-2 pb-2">
+                                    <strong>Flat {{ complaint.flat_no }}</strong> - 
+                                    <span class="badge bg-warning">{{ complaint.status }}</span>
+                                    <p class="small">{{ complaint.description[:100] }}</p>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No complaints yet</p>
+                        {% endif %}
+                        <a href="/complaints" class="btn btn-primary btn-sm">View All</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5>Recent Bills</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if recent_bills %}
+                            {% for bill in recent_bills %}
+                                <div class="border-bottom mb-2 pb-2">
+                                    <strong>Flat {{ bill.flat_no }}</strong> - 
+                                    ₹{{ bill.total_amount }}
+                                    <span class="badge {% if bill.paid %}bg-success{% else %}bg-danger{% endif %} float-end">
+                                        {% if bill.paid %}Paid{% else %}Pending{% endif %}
+                                    </span>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No bills yet</p>
+                        {% endif %}
+                        <a href="/bills" class="btn btn-primary btn-sm">View All</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <a href="/members" class="btn btn-primary m-2">📋 Manage Members</a>
+                        <a href="/complaints" class="btn btn-warning m-2">📝 View Complaints</a>
+                        <a href="/bills" class="btn btn-success m-2">💰 Manage Bills</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

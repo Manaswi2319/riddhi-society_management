@@ -1,0 +1,65 @@
+{% extends "admin_base.html" %}
+
+{% block title %}User Management{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-users"></i> User Management</h2>
+<p class="text-muted">Manage all system users</p>
+<hr>
+
+<div class="card">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="fas fa-list"></i> All Users</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>User Type</th>
+                        <th>Role</th>
+                        <th>Flat No</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.full_name }}</td>
+                        <td>
+                            <span class="badge {% if user.user_type == 'resident' %}bg-primary{% elif user.user_type == 'staff' %}bg-info{% else %}bg-warning{% endif %}">
+                                {{ user.user_type }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge {% if user.role == 'admin' %}bg-danger{% else %}bg-secondary{% endif %}">
+                                {{ user.role }}
+                            </span>
+                        </td>
+                        <td>{{ user.flat_no or '-' }}</td>
+                        <td>{{ user.email or '-' }}</td>
+                        <td>{{ user.phone or '-' }}</td>
+                        <td>
+                            <a href="/admin/edit_user/{{ user.id }}" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="/admin/delete_user/{{ user.id }}" class="btn btn-sm btn-danger"
+                               onclick="return confirm('Delete this user?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

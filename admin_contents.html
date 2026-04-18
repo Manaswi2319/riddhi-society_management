@@ -1,0 +1,80 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Manage Contents{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-file-alt"></i> Content Management</h2>
+<p class="text-muted">Add and manage content for different sections</p>
+<hr>
+
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-plus"></i> Add New Content</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="/admin/add_content">
+            <div class="row">
+                <div class="col-md-3 mb-2">
+                    <select name="section_id" class="form-control" required>
+                        <option value="">Select Section</option>
+                        {% for section in sections %}
+                        <option value="{{ section.id }}">{{ section.section_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <input type="text" name="title" class="form-control" placeholder="Title" required>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <input type="text" name="content" class="form-control" placeholder="Content" required>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <button type="submit" class="btn btn-primary w-100">Add Content</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="fas fa-list"></i> All Contents</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Section</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Created By</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for content in contents %}
+                    <tr>
+                        <td>{{ content.id }}</td>
+                        <td>{{ content.section.section_name }}</td>
+                        <td>{{ content.title }}</td>
+                        <td>{{ content.content[:100] }}{% if content.content|length > 100 %}...{% endif %}</td>
+                        <td>{{ content.created_by }}</td>
+                        <td>
+                            <a href="/admin/edit_content/{{ content.id }}" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="/admin/delete_content/{{ content.id }}" class="btn btn-sm btn-danger"
+                               onclick="return confirm('Delete this content?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
